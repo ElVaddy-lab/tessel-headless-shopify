@@ -316,7 +316,7 @@ function ProductJsonLd({ product }: { product: ProductDetail }) {
 
 function ProductSkeleton() {
   return (
-    <div className="container-page grid gap-10 pt-16 pb-20 lg:grid-cols-12" aria-busy="true" aria-label="Loading product">
+    <div className="container-page grid gap-10 pt-16 pb-20 lg:grid-cols-12" role="status" aria-busy="true" aria-label="Loading product">
       <div className="aspect-[3/4] bg-wall/40 lg:col-span-6 xl:col-span-7" />
       <div className="space-y-4 lg:col-span-6 xl:col-span-5">
         <div className="h-4 w-32 bg-wall/40" />

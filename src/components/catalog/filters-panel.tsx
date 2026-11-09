@@ -17,7 +17,7 @@ export function FiltersPanel({ activeCount, children }: { activeCount: number; c
         className="inline-flex min-h-11 w-full items-center justify-between border border-ink px-4 text-sm lg:hidden"
       >
         <span>
-          Filter and sort{activeCount ? ` (${activeCount})` : ""}
+          Filters{activeCount ? ` (${activeCount})` : ""}
         </span>
         <span aria-hidden="true">{open ? "−" : "+"}</span>
       </button>

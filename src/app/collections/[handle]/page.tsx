@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { FilterForm } from "@/components/catalog/filter-form";
 import { FiltersPanel } from "@/components/catalog/filters-panel";
+import { SortForm } from "@/components/catalog/sort-form";
 import { ProductCard } from "@/components/product-card";
 import {
   catalogHref,
@@ -11,6 +12,7 @@ import {
   FILTER_GROUPS,
   filterGroupsForView,
   parseCatalogParams,
+  sortOptionsFor,
   toProductFilters,
   type CatalogParams,
 } from "@/lib/catalog-params";
@@ -51,6 +53,9 @@ async function CollectionView({ params, searchParams }: PageProps<"/collections/
   const availability = allFilters.find((f) => f.id === "filter.v.availability");
   const hasOutOfStock = (availability?.values.find((v) => v.label === "Out of stock")?.count ?? 0) > 0;
   const count = page.products.length;
+  const sortOptions = sortOptionsFor(page.products.map((p) => p.price.amount), catalogParams.sort);
+  const keep = FILTER_GROUPS.flatMap((g) => catalogParams[g.param].map((v): [string, string] => [g.param, v]));
+  if (catalogParams.available) keep.push(["available", "1"]);
 
   return (
     <div className="container-page pt-8 pb-20 lg:pt-12 lg:pb-28">
@@ -72,6 +77,11 @@ async function CollectionView({ params, searchParams }: PageProps<"/collections/
             <h2 id="results-title" className="label text-muted" aria-live="polite">
               {count} {count === 1 ? "product" : "products"}
             </h2>
+            {sortOptions.length > 1 ? (
+              <div className="ml-auto sm:order-last">
+                <SortForm action={path} current={catalogParams.sort} options={sortOptions} keep={keep} />
+              </div>
+            ) : null}
             {active.length ? (
               <ul className="flex flex-wrap gap-2" aria-label="Active filters">
                 {active.map((chip) => (
@@ -142,7 +152,7 @@ function activeChips(
 
 function CollectionSkeleton() {
   return (
-    <div className="container-page pt-8 pb-20 lg:pt-12" aria-busy="true" aria-label="Loading collection">
+    <div className="container-page pt-8 pb-20 lg:pt-12" role="status" aria-busy="true" aria-label="Loading collection">
       <div className="h-24 border-b border-line" />
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:ml-[25%] lg:w-3/4">
         {Array.from({ length: 6 }, (_, i) => (

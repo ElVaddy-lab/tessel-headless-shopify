@@ -14,6 +14,18 @@ export const SORTS = {
 
 export type SortId = keyof typeof SORTS;
 
+/**
+ * Sort options worth offering for a listing. When every product starts at the same price
+ * (all perfumes are "from $38"), price sorting would change nothing, so it is left out
+ * unless it is the sort already in the URL.
+ */
+export function sortOptionsFor(prices: string[], current: SortId): SortId[] {
+  const samePrice = new Set(prices).size <= 1;
+  return (Object.keys(SORTS) as SortId[]).filter(
+    (id) => !samePrice || SORTS[id].sortKey !== "PRICE" || id === current,
+  );
+}
+
 export const FILTER_GROUPS = [
   { param: "type", filterId: "filter.p.product_type", label: "Type" },
   { param: "family", filterId: "filter.p.m.custom.family", label: "Family" },

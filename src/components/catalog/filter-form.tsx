@@ -1,73 +1,74 @@
 import Form from "next/form";
 import Link from "next/link";
-import { SORTS, type CatalogParams, type FilterGroupView } from "@/lib/catalog-params";
+import type { CatalogParams, FilterGroupView } from "@/lib/catalog-params";
+import { FilterOption } from "./filter-option";
+import { NoteOptions } from "./note-options";
 
 type Props = {
   action: string;
   params: CatalogParams;
   groups: FilterGroupView[];
-  /** Number of products in the collection that are in stock (for the label). */
+  /** Whether the collection has sold-out products (otherwise "In stock only" is pointless). */
   hasOutOfStock: boolean;
 };
+
+const summaryClass =
+  "flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden";
+
+/** Collapsible group; opens by itself when one of its values is selected. */
+function Group({ label, selected, children }: { label: string; selected: number; children: React.ReactNode }) {
+  return (
+    // suppressHydrationWarning: a visitor may open a group before JavaScript has loaded.
+    <details open={selected > 0} suppressHydrationWarning className="group border-t border-line">
+      <summary className={summaryClass}>
+        <span className="label text-muted">
+          {label}
+          {selected ? <span className="text-ink"> · {selected}</span> : null}
+        </span>
+        <span aria-hidden="true" className="text-lg leading-none transition-transform group-open:rotate-45">
+          +
+        </span>
+      </summary>
+      <fieldset className="pb-4">
+        <legend className="sr-only">{label}</legend>
+        {children}
+      </fieldset>
+    </details>
+  );
+}
 
 /**
  * Plain GET form: works without JavaScript, and with it `next/form` turns submission
  * into a client-side navigation. Filters apply on "Apply", not on every click.
+ * Sorting lives above the results (SortForm); the current sort is carried here as a hidden field.
  */
 export function FilterForm({ action, params, groups, hasOutOfStock }: Props) {
   return (
-    <Form action={action} className="flex flex-col gap-6">
-      <div className="flex flex-col gap-2">
-        <label htmlFor="sort" className="label text-muted">
-          Sort by
-        </label>
-        <select
-          id="sort"
-          name="sort"
-          defaultValue={params.sort}
-          className="min-h-11 border border-control bg-paper px-3 text-sm"
-        >
-          {Object.entries(SORTS).map(([id, s]) => (
-            <option key={id} value={id}>
-              {s.label}
-            </option>
-          ))}
-        </select>
-      </div>
+    <Form action={action} className="flex flex-col">
+      {params.sort !== "featured" ? <input type="hidden" name="sort" value={params.sort} /> : null}
 
       {groups.map((group) => (
-        <fieldset key={group.param} className="border-t border-line pt-4">
-          <legend className="label float-left mb-3 w-full text-muted">{group.label}</legend>
-          <ul className={`clear-both grid gap-x-4 gap-y-1 ${group.param === "note" ? "grid-cols-2 lg:grid-cols-1 xl:grid-cols-2" : ""}`}>
-            {group.options.map((option) => {
-              const id = `f-${group.param}-${option.value}`;
-              return (
-                <li key={option.value}>
-                  <label htmlFor={id} className="flex min-h-9 cursor-pointer items-center gap-2 text-sm">
-                    <input
-                      id={id}
-                      type="checkbox"
-                      name={group.param}
-                      value={option.value}
-                      defaultChecked={option.checked}
-                      className="size-4 shrink-0 accent-ink"
-                    />
-                    <span>
-                      {group.param === "intensity" ? `${option.label} of 3` : option.label}{" "}
-                      <span className="text-muted">({option.count})</span>
-                    </span>
-                  </label>
-                </li>
-              );
-            })}
-          </ul>
-        </fieldset>
+        <Group key={group.param} label={group.label} selected={group.options.filter((o) => o.checked).length}>
+          {group.param === "note" ? (
+            <NoteOptions options={group.options} />
+          ) : (
+            <ul className="grid gap-y-1">
+              {group.options.map((option) => (
+                <FilterOption
+                  key={option.value}
+                  param={group.param}
+                  option={option}
+                  label={group.param === "intensity" ? `${option.label} of 3` : option.label}
+                />
+              ))}
+            </ul>
+          )}
+        </Group>
       ))}
 
       {hasOutOfStock ? (
-        <fieldset className="border-t border-line pt-4">
-          <legend className="label float-left mb-3 w-full text-muted">Availability</legend>
-          <label htmlFor="f-available" className="clear-both flex min-h-9 cursor-pointer items-center gap-2 text-sm">
+        <Group label="Availability" selected={params.available ? 1 : 0}>
+          <label htmlFor="f-available" className="flex min-h-9 cursor-pointer items-center gap-2 text-sm">
             <input
               id="f-available"
               type="checkbox"
@@ -78,7 +79,7 @@ export function FilterForm({ action, params, groups, hasOutOfStock }: Props) {
             />
             In stock only
           </label>
-        </fieldset>
+        </Group>
       ) : null}
 
       <div className="flex flex-wrap items-center gap-4 border-t border-line pt-4">

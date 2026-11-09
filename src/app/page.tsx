@@ -16,6 +16,12 @@ const TEASER_NOTES: { handle: string; name: string; group: NoteGroup }[] = [
   { handle: "vanilla", name: "Vanilla", group: "Gourmand" },
 ];
 
+const SET_STEPS = [
+  { title: "Choose a half", text: "Light: citrus, fresh, green, floral. Deep: woods, resins, gourmand." },
+  { title: "Wear each for a few days", text: "See how it opens, settles and lasts through a day." },
+  { title: "Pick a full bottle", text: "The one you kept reaching for, in 10, 50 or 100 ml." },
+];
+
 const primaryButton =
   "inline-flex min-h-12 items-center justify-center bg-ink px-6 text-sm tracking-wide text-paper hover:bg-ink/85";
 const secondaryButton =
@@ -66,9 +72,9 @@ function Hero() {
             className="object-cover object-[80%_50%]"
           />
         </div>
-        <div className="border-x border-b border-line bg-paper p-6 sm:p-8 lg:absolute lg:top-1/2 lg:left-10 lg:max-w-md lg:-translate-y-1/2 lg:border lg:p-10">
+        <div className="border-x border-b border-line bg-paper p-6 sm:p-8 lg:absolute lg:top-1/2 lg:left-10 lg:max-w-lg lg:-translate-y-1/2 lg:border lg:p-10">
           <p className="label text-muted">Eau de parfum · 10 compositions</p>
-          <h1 id="hero-title" className="mt-3 text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-medium tracking-[-0.02em]">
+          <h1 id="hero-title" className="mt-3 text-[clamp(2.25rem,4vw,3.75rem)] leading-[1.02] font-medium tracking-[-0.02em]">
             Fragrance, built like architecture.
           </h1>
           <p className="mt-5 max-w-[40ch] text-base leading-relaxed text-muted">
@@ -170,12 +176,20 @@ async function DiscoverySets() {
     <section aria-labelledby="sets-title" className="container-page pt-20 lg:pt-28">
       <SectionHeading id="sets-title" kicker="Not sure yet" title="Try five before a full bottle" />
       <ul className="grid grid-cols-2 border-l border-line lg:grid-cols-4">
-        <li className="col-span-2 flex flex-col justify-end gap-4 border-r border-b border-line p-4 sm:p-6 lg:p-10">
+        <li className="col-span-2 flex flex-col justify-between gap-8 border-r border-b border-line p-4 sm:p-6 lg:p-10">
           <p className="max-w-[44ch] text-lg leading-relaxed">
-            Each set holds five 2 ml sprays — the light half of the collection or the deep one. Wear each for a few
-            days, then choose a full bottle.
+            Each set holds five 2 ml sprays — the light half of the collection or the deep one. Enough to wear every
+            scent for a few days, on skin rather than a paper strip.
           </p>
-          <p className="label text-muted">Light: citrus, fresh, green, floral · Deep: woods, resins, gourmand</p>
+          <ol className="grid border-t border-line sm:grid-cols-3" aria-label="How a discovery set works">
+            {SET_STEPS.map((step, i) => (
+              <li key={step.title} className="border-b border-line py-4 last:border-b-0 sm:border-b-0 sm:py-5 sm:pr-5 sm:not-first:border-l sm:not-first:pl-5">
+                <p className="label text-muted">{String(i + 1).padStart(2, "0")}</p>
+                <p className="mt-3 font-medium">{step.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{step.text}</p>
+              </li>
+            ))}
+          </ol>
         </li>
         {listing.products.map((product) => (
           <li key={product.handle} className="border-r border-b border-line">

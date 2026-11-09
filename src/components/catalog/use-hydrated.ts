@@ -1,0 +1,12 @@
+import { useSyncExternalStore } from "react";
+
+const noop = () => () => {};
+
+/** False on the server and during hydration, true once JavaScript runs in the browser. */
+export function useHydrated(): boolean {
+  return useSyncExternalStore(
+    noop,
+    () => true,
+    () => false,
+  );
+}

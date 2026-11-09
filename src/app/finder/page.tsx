@@ -49,7 +49,7 @@ async function FinderLoader() {
 
 function FinderSkeleton() {
   return (
-    <div className="mt-8 grid gap-10 lg:grid-cols-12" aria-busy="true" aria-label="Loading the finder">
+    <div className="mt-8 grid gap-10 lg:grid-cols-12" role="status" aria-busy="true" aria-label="Loading the finder">
       <div className="space-y-3 lg:col-span-7">
         <div className="h-12 bg-wall/30" />
         <div className="h-10 w-1/2 bg-wall/30" />

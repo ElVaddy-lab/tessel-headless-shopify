@@ -5,6 +5,7 @@ import {
   filterGroupsForView,
   parseCatalogParams,
   slugify,
+  sortOptionsFor,
   toProductFilters,
   type StorefrontFilter,
 } from "./catalog-params";
@@ -72,5 +73,19 @@ describe("catalogHref / countActiveFilters", () => {
     expect(catalogHref("/collections/perfumes", p)).toBe("/collections/perfumes?family=woody&note=vanilla&sort=name");
     expect(countActiveFilters(p)).toBe(2);
     expect(catalogHref("/collections/perfumes", parseCatalogParams({}))).toBe("/collections/perfumes");
+  });
+});
+
+describe("sortOptionsFor", () => {
+  it("drops price sorts when every product starts at the same price", () => {
+    expect(sortOptionsFor(["38.0", "38.0"], "featured")).toEqual(["featured", "name"]);
+  });
+
+  it("keeps a price sort that is already selected", () => {
+    expect(sortOptionsFor(["38.0", "38.0"], "price-desc")).toEqual(["featured", "price-desc", "name"]);
+  });
+
+  it("offers every sort when prices differ", () => {
+    expect(sortOptionsFor(["38.0", "68.0"], "featured")).toEqual(["featured", "price-asc", "price-desc", "name"]);
   });
 });
