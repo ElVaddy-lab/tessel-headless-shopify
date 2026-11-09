@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Tessel design tokens — see DESIGN.md */
+:root {
+  --paper: #f2efea;
+  --paper-2: #e7e2da;
+  --ink: #1e1c19;
+  --muted: #5e5850;
+  --line: #d3ccc2;
+  --control: #8a8277;
+  --wall: #b7a99a;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-control: var(--control);
+  --color-wall: var(--wall);
+
+  --color-note-citrus: #e3cf8a;
+  --color-note-floral: #e2c2bc;
+  --color-note-woody: #bfa488;
+  --color-note-amber: #d19a64;
+  --color-note-fresh: #b9d0cc;
+  --color-note-gourmand: #d7b794;
+  --color-note-green: #b4c29a;
+  --color-note-spicy: #cf8c73;
+  --color-note-musky: #d8d0c6;
+
+  --font-sans: var(--font-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html {
+  background: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* Plex Mono "drawing annotation" label */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
