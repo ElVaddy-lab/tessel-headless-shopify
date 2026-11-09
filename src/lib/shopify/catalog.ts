@@ -1,5 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { SORTS, type ProductFilterInput, type SortId, type StorefrontFilter } from "@/lib/catalog-params";
+import { isNoteGroup, type NoteGroup } from "@/lib/notes";
 import type { ScentProfile } from "@/lib/scoring";
 import { PRODUCT_DETAIL_QUERY, toProductDetail, type ProductDetail, type ProductDetailNode } from "./product-detail";
 import { PRODUCT_CARD_FRAGMENT, toProductCard, type ProductCard, type ProductCardNode } from "./products";
@@ -202,9 +203,15 @@ const SCENT_PROFILES_QUERY = /* GraphQL */ `
                   name: field(key: "name") {
                     value
                   }
+                  group: field(key: "group") {
+                    value
+                  }
                 }
               }
             }
+          }
+          occasions: metafield(namespace: "custom", key: "occasions") {
+            value
           }
         }
       }
@@ -214,10 +221,24 @@ const SCENT_PROFILES_QUERY = /* GraphQL */ `
 `;
 
 type ScentProfileNode = ProductCardNode & {
-  notes: { references: { nodes: { handle: string; name: { value: string } | null }[] } | null } | null;
+  notes: {
+    references: { nodes: { handle: string; name: { value: string } | null; group: { value: string } | null }[] } | null;
+  } | null;
+  occasions: { value: string } | null;
 };
 
-export type PerfumeProfile = ProductCard & ScentProfile;
+export type ProfileNote = { handle: string; name: string; group: NoteGroup | null };
+
+export type PerfumeProfile = ProductCard & ScentProfile & { notes: ProfileNote[]; occasions: string[] };
+
+function parseList(value: string | undefined): string[] {
+  try {
+    const parsed: unknown = JSON.parse(value ?? "[]");
+    return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : [];
+  } catch {
+    return [];
+  }
+}
 
 export async function getPerfumeProfiles(): Promise<PerfumeProfile[]> {
   "use cache";
@@ -228,6 +249,11 @@ export async function getPerfumeProfiles(): Promise<PerfumeProfile[]> {
   });
   return (data.collection?.products.nodes ?? []).map((node) => ({
     ...toProductCard(node),
-    notes: (node.notes?.references?.nodes ?? []).map((n) => ({ handle: n.handle, name: n.name?.value ?? n.handle })),
+    notes: (node.notes?.references?.nodes ?? []).map((n) => ({
+      handle: n.handle,
+      name: n.name?.value ?? n.handle,
+      group: isNoteGroup(n.group?.value) ? (n.group?.value as NoteGroup) : null,
+    })),
+    occasions: parseList(node.occasions?.value),
   }));
 }

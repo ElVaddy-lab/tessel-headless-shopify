@@ -38,6 +38,16 @@ html {
   background: var(--paper);
 }
 
+/* The finder's fixed bottom bar (mobile) must not hide focused or scrolled-to content. */
+html:has(.finder-bar) {
+  scroll-padding-bottom: 6rem;
+}
+@media (width < 64rem) {
+  body:has(.finder-bar) {
+    padding-bottom: 5rem;
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
