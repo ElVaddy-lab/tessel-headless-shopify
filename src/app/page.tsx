@@ -145,7 +145,7 @@ function FinderTeaser() {
                   href={`/finder?like=${note.handle}`}
                   className={`flex aspect-square flex-col justify-between border border-control p-3 hover:border-ink hover:outline hover:outline-1 hover:outline-ink ${NOTE_GROUP_BG[note.group]}`}
                 >
-                  <span className="label text-ink/80">{note.group}</span>
+                  <span className="label text-ink">{note.group}</span>
                   <span className="text-sm leading-tight font-medium sm:text-base">{note.name}</span>
                 </Link>
               </li>
