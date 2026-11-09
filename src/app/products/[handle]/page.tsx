@@ -6,8 +6,7 @@ import { Suspense, type ReactNode } from "react";
 import { IntensityScale } from "@/components/intensity-scale";
 import { NoteTile } from "@/components/note-tile";
 import { ProductCard } from "@/components/product-card";
-import { VariantPicker } from "@/components/product/variant-picker";
-import { formatPrice } from "@/lib/format";
+import { ProductPurchase } from "@/components/product/product-purchase";
 import { similarityReason, similarScents } from "@/lib/scoring";
 import { getPerfumeProfiles, getProduct, getProductHandles } from "@/lib/shopify/catalog";
 import type { Note, ProductDetail } from "@/lib/shopify/product-detail";
@@ -79,17 +78,19 @@ async function ProductView({ params }: Pick<PageProps<"/products/[handle]">, "pa
 
         <div className="mt-6 grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-6 xl:col-span-7">
-            <div className="relative aspect-[3/4] overflow-hidden bg-wall lg:sticky lg:top-6">
-              {product.image ? (
-                <Image
-                  src={product.image.url}
-                  alt={product.image.alt}
-                  fill
-                  priority
-                  sizes="(min-width: 80rem) 55vw, (min-width: 64rem) 48vw, 100vw"
-                  className="object-cover"
-                />
-              ) : null}
+            <div className="lg:sticky lg:top-6">
+              <div className="relative aspect-[3/4] overflow-hidden bg-wall">
+                {product.image ? (
+                  <Image
+                    src={product.image.url}
+                    alt={product.image.alt}
+                    fill
+                    priority
+                    sizes="(min-width: 80rem) 55vw, (min-width: 64rem) 48vw, 100vw"
+                    className="object-cover"
+                  />
+                ) : null}
+              </div>
             </div>
           </div>
 
@@ -106,15 +107,7 @@ async function ProductView({ params }: Pick<PageProps<"/products/[handle]">, "pa
             />
 
             <div className="mt-8">
-              {product.optionName ? (
-                <VariantPicker optionName={product.optionName} variants={product.variants} />
-              ) : (
-                <p className="text-2xl font-medium">
-                  {formatPrice(product.variants[0].price)}
-                  {!product.availableForSale ? <span className="label ml-3 align-middle text-muted">Sold out</span> : null}
-                </p>
-              )}
-              <p className="mt-4 text-sm text-muted">Adding to the bag arrives with the cart (next stage of this demo).</p>
+              <ProductPurchase title={product.title} optionName={product.optionName} variants={product.variants} />
             </div>
 
             {isPerfume ? <PerfumeDetails product={product} /> : null}

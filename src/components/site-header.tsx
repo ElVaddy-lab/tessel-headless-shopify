@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import { CartButtonFallback, CartLoader } from "./cart/cart-loader";
 
 const NAV = [
   { href: "/collections/perfumes", label: "Fragrances" },
@@ -25,12 +27,17 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
-        <Link
-          href="/finder"
-          className="inline-flex min-h-11 items-center border border-ink px-4 text-sm hover:bg-ink hover:text-paper"
-        >
-          Find your scent
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/finder"
+            className="inline-flex min-h-11 items-center border border-ink px-4 text-sm hover:bg-ink hover:text-paper"
+          >
+            Find your scent
+          </Link>
+          <Suspense fallback={<CartButtonFallback />}>
+            <CartLoader />
+          </Suspense>
+        </div>
       </div>
     </header>
   );
