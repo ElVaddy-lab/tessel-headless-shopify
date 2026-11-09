@@ -66,7 +66,8 @@ function Hero() {
             src={hero}
             alt="Three Tessel bottles — Mullion, Clerestory and Architrave — on stepped stone plinths in window light"
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             placeholder="blur"
             sizes="(min-width: 90rem) 85rem, 100vw"
             className="object-cover object-[80%_50%]"

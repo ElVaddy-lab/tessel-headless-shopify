@@ -8,7 +8,7 @@ import { useHydrated } from "./use-hydrated";
 /**
  * The notes list is long (46), so with JavaScript it gets a search box that hides
  * non-matching rows. Rows stay in the DOM, so ticks made before searching are still submitted.
- * Without JavaScript the full list is shown and the box is not rendered.
+ * Until the page hydrates the full list is shown and the box is not rendered.
  */
 export function NoteOptions({ options }: { options: FilterGroupView["options"] }) {
   const hydrated = useHydrated();

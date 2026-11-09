@@ -26,7 +26,8 @@ export function ProductCard({ product, sizes, kicker, priority = false }: Props)
             alt={product.image.alt}
             fill
             sizes={sizes}
-            priority={priority}
+            loading={priority ? "eager" : undefined}
+            fetchPriority={priority ? "high" : undefined}
             className="object-cover transition-opacity duration-200"
           />
         ) : null}

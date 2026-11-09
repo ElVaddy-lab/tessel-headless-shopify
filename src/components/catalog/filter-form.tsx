@@ -38,9 +38,11 @@ function Group({ label, selected, children }: { label: string; selected: number;
 }
 
 /**
- * Plain GET form: works without JavaScript, and with it `next/form` turns submission
- * into a client-side navigation. Filters apply on "Apply", not on every click.
+ * Plain GET form, so the filter state lives in a readable, shareable URL and Back works;
+ * `next/form` turns submission into a client-side navigation. Filters apply on "Apply".
  * Sorting lives above the results (SortForm); the current sort is carried here as a hidden field.
+ * (The collection content itself is streamed and revealed by React's inline script, so the
+ * catalog page as a whole does need JavaScript.)
  */
 export function FilterForm({ action, params, groups, hasOutOfStock }: Props) {
   return (

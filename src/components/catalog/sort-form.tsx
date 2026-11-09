@@ -13,8 +13,8 @@ type Props = {
 };
 
 /**
- * Sorting applies as soon as the select changes. Without JavaScript the form shows
- * its own "Sort" button instead.
+ * Sorting applies as soon as the select changes. Until the page hydrates, the form
+ * shows its own "Sort" button instead.
  */
 export function SortForm({ action, current, options, keep }: Props) {
   const hydrated = useHydrated();

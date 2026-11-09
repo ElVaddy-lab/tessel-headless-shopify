@@ -13,7 +13,8 @@
     "shopify:check": "node scripts/check-access.mjs",
     "shopify:schema": "node scripts/schema.mjs",
     "shopify:seed": "node scripts/seed.mjs",
-    "shopify:webhooks": "node scripts/webhooks.mjs"
+    "shopify:webhooks": "node scripts/webhooks.mjs",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "next": "16.4.5",
@@ -22,6 +23,8 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.0",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^22.20.5",
     "@types/react": "^19",

@@ -17,7 +17,13 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400"],
 });
 
+// Absolute base for canonical and Open Graph URLs. Vercel sets the production host at build and run time.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Tessel — niche fragrance (demo store)",
     template: "%s · Tessel",

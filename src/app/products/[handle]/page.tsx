@@ -85,7 +85,8 @@ async function ProductView({ params }: Pick<PageProps<"/products/[handle]">, "pa
                     src={product.image.url}
                     alt={product.image.alt}
                     fill
-                    priority
+                    loading="eager"
+                    fetchPriority="high"
                     sizes="(min-width: 80rem) 55vw, (min-width: 64rem) 48vw, 100vw"
                     className="object-cover"
                   />
