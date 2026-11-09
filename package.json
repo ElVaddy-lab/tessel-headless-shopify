@@ -12,7 +12,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "shopify:check": "node scripts/check-access.mjs",
     "shopify:schema": "node scripts/schema.mjs",
-    "shopify:seed": "node scripts/seed.mjs"
+    "shopify:seed": "node scripts/seed.mjs",
+    "shopify:webhooks": "node scripts/webhooks.mjs"
   },
   "dependencies": {
     "next": "16.4.5",
