@@ -87,7 +87,7 @@ export function SearchDialog() {
             placeholder="Vanilla, Quoin, candle…"
             autoComplete="off"
             aria-describedby="search-status"
-            className="min-h-12 flex-1 bg-transparent px-2 text-lg outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-ink"
+            className="min-h-12 flex-1 bg-transparent px-2 text-lg outline-none [&::-webkit-search-cancel-button]:appearance-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-ink"
           />
           <button type="button" onClick={close} className="inline-flex size-11 items-center justify-center text-2xl" aria-label="Close search">
             ×

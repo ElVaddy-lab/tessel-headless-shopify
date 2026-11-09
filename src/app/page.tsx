@@ -75,7 +75,7 @@ function Hero() {
         </div>
         <div className="border-x border-b border-line bg-paper p-6 sm:p-8 lg:absolute lg:top-1/2 lg:left-10 lg:max-w-lg lg:-translate-y-1/2 lg:border lg:p-10">
           <p className="label text-muted">Eau de parfum · 10 compositions</p>
-          <h1 id="hero-title" className="mt-3 text-[clamp(2.25rem,4vw,3.75rem)] leading-[1.02] font-medium tracking-[-0.02em]">
+          <h1 id="hero-title" className="mt-3 text-[clamp(2.25rem,4vw,3.75rem)] leading-[1.02] font-medium tracking-[-0.02em] text-balance">
             Fragrance, built like architecture.
           </h1>
           <p className="mt-5 max-w-[40ch] text-base leading-relaxed text-muted">
